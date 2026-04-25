@@ -12,6 +12,10 @@ export function middleware(request) {
   if (accessToken && pathname === "/login") {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
+  
+  if (pathname === "/") {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
+  }
 
   return NextResponse.next();
 }
