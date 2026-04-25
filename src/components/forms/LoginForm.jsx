@@ -5,6 +5,7 @@ import { login } from "@/services/authService";
 import Link from "next/link";
 import { useRouter } from "next/navigation"
 import React, { useContext, useState } from 'react'
+import Cookies from "js-cookie";
 
 export const LoginForm = () => {
     const router = useRouter();
@@ -26,16 +27,21 @@ export const LoginForm = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         setErrors(null);
-
+        
         try {
             const response = await login(
                 citizenNumber,
                 password,
             )
+            
+            const token = response.data.access_token;
+            Cookies.set('access_token', token);
+            
             setUser(response.data.user);
             router.push("/dashboard");
         } catch (error) {
-            setErrors(error.response.data.errors)
+            const err = error.response?.data?.errors;
+            setErrors(err); 
         }
     }
 

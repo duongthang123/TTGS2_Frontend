@@ -1,4 +1,5 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const api = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -7,31 +8,21 @@ const api = axios.create({
     },
 });
 
-api.interceptors.request.use(function (config) {
-    const token = localStorage.getItem("access_token")
-
+api.interceptors.request.use(async (config) => {
+    const token = Cookies.get('access_token');
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
-
     return config;
-})
+});
 
 api.interceptors.response.use(
-    function (response) {
+    (response) => {
         return response;
     },
-
-    function (error) {
-        const statusCode = error?.response.data.status;
-        const url = error?.config?.url;
-
-        if (statusCode === 401 && url !== "/login") {
-            window.location.href = "/login";
-        }
-
+    (error) => {
         return Promise.reject(error);
     }
-)
+);
 
 export default api;
