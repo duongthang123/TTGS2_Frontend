@@ -1,7 +1,7 @@
 "use client"
 
 import api from '@/services/api';
-import { Cog6ToothIcon, HomeIcon, UserGroupIcon, UserIcon, ArrowRightStartOnRectangleIcon } from '@heroicons/react/24/solid';
+import { Cog6ToothIcon, HomeIcon, UserGroupIcon, UserIcon, ArrowRightStartOnRectangleIcon, UsersIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useContext } from 'react'
@@ -10,8 +10,9 @@ import { AuthContext } from '@/context/AuthContext';
 
 const menuItems = [
     { name : "Tổng quan", href: "/dashboard", icon: <HomeIcon className='w-6 h-6'/>},
-    { name : "Người dùng", href: "/dashboard/users", icon: <UserIcon className='w-6 h-6'/>},
-    { name : "Đội công tác", href: "/dashboard/users", icon: <UserGroupIcon className='w-6 h-6' />},
+    { name : "Quản lý quyền", href: "/dashboard/roles", icon: <UsersIcon className='w-6 h-6'/>},
+    { name : "Cán bộ chiến sĩ", href: "/dashboard/users", icon: <UserIcon className='w-6 h-6'/>},
+    { name : "Đội công tác", href: "/dashboard/units", icon: <UserGroupIcon className='w-6 h-6' />},
     { name : "Cài đặt", href: "/dashboard/settings", icon: <Cog6ToothIcon className='w-6 h-6' />},
     { name : "Đăng xuất", href: null, icon: <ArrowRightStartOnRectangleIcon className='w-6 h-6'/>,},
 ];
