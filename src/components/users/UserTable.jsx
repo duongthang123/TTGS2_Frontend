@@ -1,18 +1,24 @@
 "use client"
 
-import { getUsers } from '@/services/userService';
+import { deleteUserById, getUsers } from '@/services/userService';
 import { STATUS_MAP } from '@/utils/statusMap';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
 import { EyeIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid';
 import Pagination from '../comon/Pagination';
+import ConfirmPrompt from '../ConfirmPrompt/ConfirmPrompt';
+import { toast } from 'react-toastify';
+import LoadingBlock from '../comon/LoadingBlock';
 
 function UserTable() {
     const [users, setUsers] = useState([]);
+    const [selectedUserId, setSelectedUserId] = useState(null);
+    const [showFormDelete, setShowFormDelete] = useState(false);
     const [links, setLinks] = useState([]);
     const [meta, setMeta] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    
 
     useEffect(() => {
         async function loadUser() {
@@ -22,9 +28,10 @@ function UserTable() {
                 setLinks(response.links);
                 setMeta(response.meta);
             } catch (error) {
+                setIsLoading(true);
                 console.log(error);
             } finally {
-                setIsLoading(true);
+                setIsLoading(false);
             }
         }   
 
@@ -39,6 +46,32 @@ function UserTable() {
         4: "text-blue-700",   // transferred
         5: "text-purple-700", // archived
     };
+
+    const handleDelete = (userId) => {
+        setSelectedUserId(userId);
+        setShowFormDelete(true);
+    }
+
+    const handleCancelDeleteUser = () => {
+        setShowFormDelete(false);
+    }
+
+    const hanldeConfirmDelete = async () => {
+        try {
+            await deleteUserById(selectedUserId)
+            setShowFormDelete(false);
+            setUsers((prev) => prev.filter((user) => user.id !== selectedUserId));
+            toast.success('Xóa người dùng thành công');
+
+        } catch (error) {
+            console.log(error.response?.data?.errors);
+            toast.error('Xoá người dùng thất bại!')
+        }
+    }
+
+    if (isLoading) {
+		return <LoadingBlock tittle='Đang tải dữ liệu người dùng' />
+	}
 
   return (
     <>
@@ -71,15 +104,15 @@ function UserTable() {
                             <td className={`px-4 py-3 text-sm text-center text-gray-600 ${STATUS_STYLE[user.status] ?? ''}`}>{STATUS_MAP[user.status] ?? ''}</td>
                             <td className="px-4 py-3 text-sm text-gray-600">
                                 <div className="flex items-center space-x-2">
-                                    <Link href="/" className="p-2 rounded hover:bg-gray-100">
+                                    <Link href={`/dashboard/users/${user.id}/show`} className="p-2 rounded hover:bg-gray-100">
                                         <EyeIcon className="w-6 h-6" />
                                     </Link>
-                                    <Link href="/" className="p-2 rounded hover:bg-gray-100">
+                                    <Link href={`/dashboard/users/${user.id}/edit`} className="p-2 rounded hover:bg-gray-100">
                                         <PencilSquareIcon className="w-6 h-6" />
                                     </Link>
-                                    <Link href="/" className="p-2 rounded hover:bg-gray-100">
+                                    <a onClick={() => handleDelete(user.id)} className="p-2 rounded cursor-pointer hover:bg-gray-100">
                                         <TrashIcon className="w-6 h-6 text-red-600" />
-                                    </Link>
+                                    </a>
                                 </div>
                             </td>
                         </tr>
@@ -89,6 +122,14 @@ function UserTable() {
                 )}
             </tbody>
         </table>
+
+        {showFormDelete && (
+            <ConfirmPrompt 
+                message="Bạn có chắc chắn muốn xóa không?"
+                onCancel={handleCancelDeleteUser}
+                onConfirm={hanldeConfirmDelete}
+            />
+        )}
 
         <Pagination 
             totalPages={meta.last_page}

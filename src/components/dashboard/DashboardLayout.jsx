@@ -7,12 +7,12 @@ import 'react-toastify/dist/ReactToastify.css';
 export const DashboardLayout = ({children, title = "Phần mềm quản lý CBCS" }) => {
   return (
     <div className="flex min-h-screen bg-[#f8fafc]">
-        <aside className="shrink-0 w-64 flex flex-col h-screen bg-slate-600 text-slate-300 border-r border-slate-800">
+        <aside className="sticky top-0 shrink-0 w-64 flex flex-col h-screen bg-slate-600 text-slate-300 border-r border-slate-800">
           <SideBar />
         </aside>
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col min-h-screen">
         <Navbar title={title}/>
-        <main className="px-4 mx-auto w-full">
+        <main className="flex-1 px-4 mx-auto w-full">
           {children}
         </main>
       </div>

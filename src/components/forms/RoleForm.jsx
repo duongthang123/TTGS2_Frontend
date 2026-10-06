@@ -76,7 +76,7 @@ function RoleForm({initialData = {}, onSubmit}) {
             await onSubmit(data);
         } catch (error) {
             setErrors(error.response?.data?.errors || {});
-            toast.error('Có lỗi xảy ra khi cập nhật quyền');
+            toast.error('Đã có lỗi xảy ra');
         }
     }
 

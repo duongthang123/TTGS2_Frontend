@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 
 export const LoginForm = () => {
     const router = useRouter();
-    const {setUser} = useContext(AuthContext);
+    const {refreshMe, setUser} = useContext(AuthContext);
 
     const [citizenNumber, setCitizenNumber] = useState('');
     const [password, setPassword] = useState('');
@@ -37,7 +37,14 @@ export const LoginForm = () => {
             const token = response.data.access_token;
             Cookies.set('access_token', token);
             
-            setUser(response.data.user);
+            try {
+                await refreshMe();
+            } catch (error) {
+                Cookies.remove('access_token');
+                setUser(null);
+                throw error;
+            }
+
             router.push("/dashboard");
         } catch (error) {
             const err = error.response?.data?.errors;

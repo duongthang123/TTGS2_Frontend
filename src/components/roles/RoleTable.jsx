@@ -8,6 +8,7 @@ import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid';
 import ConfirmPrompt from '../ConfirmPrompt/ConfirmPrompt';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
+import LoadingBlock from '../comon/LoadingBlock';
 
 function RoleTable() {
     const router = useRouter();
@@ -16,6 +17,7 @@ function RoleTable() {
     const [meta, setMeta] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [selectedId, setSelectedId] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const loadRoles = async () => {
@@ -24,8 +26,11 @@ function RoleTable() {
                 setRoles(response.data);
                 setMeta(response.meta);
             } catch (error) {
+                setIsLoading(true);
                 console.log(error);
-            } 
+            } finally {
+                setIsLoading(false);
+            }
         }
 
         loadRoles();
@@ -47,7 +52,6 @@ function RoleTable() {
             setRoles((prev) => prev.filter((role) => role.id !== selectedId));
             toast.success('Xóa quyền thành công');
         } catch (error) {
-            console.log(error.response?.data?.errors);
             toast.error('Xóa quyền thất bại');
             setShowForm(false);
         }
@@ -56,6 +60,10 @@ function RoleTable() {
     const handleEditRole = (roleId) => {
         router.push(`/dashboard/roles/${roleId}/edit`);
     }
+
+    if (isLoading) {
+		return <LoadingBlock tittle='Đang tải dữ liệu quyền người dùng' />
+	}
 
   return (
     <>

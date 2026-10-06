@@ -6,7 +6,8 @@ import { AuthContext } from '@/context/AuthContext'
 
 export const Navbar = ({title}) => {
     const {user} = useContext(AuthContext);
-  return (
+    
+    return (
     <>
         <header className="h-16 border-b bg-white/80 backdrop-blur-md sticky top-0 z-20 px-4 md:px-8 flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -39,7 +40,7 @@ export const Navbar = ({title}) => {
                     </div>
                 </div>
             </div>
-            </header>
+        </header>
     </>
   )
 }
