@@ -7,15 +7,8 @@ import { usePathname, useRouter } from 'next/navigation';
 import React, { useContext } from 'react'
 import Cookies from 'js-cookie';
 import { AuthContext } from '@/context/AuthContext';
-
-const menuItems = [
-    { name : "Tổng quan", href: "/dashboard", icon: <HomeIcon className='w-6 h-6'/>},
-    { name : "Quản lý quyền", href: "/dashboard/roles", icon: <UsersIcon className='w-6 h-6'/>},
-    { name : "Cán bộ chiến sĩ", href: "/dashboard/users", icon: <UserIcon className='w-6 h-6'/>},
-    { name : "Đội công tác", href: "/dashboard/units", icon: <UserGroupIcon className='w-6 h-6' />},
-    { name : "Cài đặt", href: "/dashboard/settings", icon: <Cog6ToothIcon className='w-6 h-6' />},
-    { name : "Đăng xuất", href: null, icon: <ArrowRightStartOnRectangleIcon className='w-6 h-6'/>,},
-];
+import PermissionGuard from '@/components/guards/PermissionGuard';
+import RoleGuard from '../guards/RoleGuard';
 
 const isActiveRoute = (pathname, href) => {
     if (href === "/dashboard") return pathname === href;
@@ -23,7 +16,7 @@ const isActiveRoute = (pathname, href) => {
 };
 
 export const SideBar = () => {
-    const {user, setUser} = useContext(AuthContext);
+    const {setUser} = useContext(AuthContext);
     const pathname = usePathname();
     const router = useRouter();
 
@@ -44,32 +37,42 @@ export const SideBar = () => {
         <aside className="w-64 bg-slate-600 text-slate-300 hidden md:flex flex-col border-r border-slate-800">
             <div className="p-6 text-white text-center text-xl font-bold tracking-wider">PC11B</div>
             <nav className="flex-1 px-4 space-y-1">
-                {menuItems.map((item) => {
-                    const isActive = isActiveRoute(pathname, item.href);
+                <Link href="/dashboard" className={`flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition-all ${isActiveRoute(pathname, "/dashboard") ? "bg-slate-800 text-white" : ""}`}>
+                    <HomeIcon className="w-6 h-6" />
+                    Tổng quan
+                </Link>
+
+                <PermissionGuard permissions={["show-role"]}>
+                    <Link href="/dashboard/roles" className={`flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition-all ${isActiveRoute(pathname, "/dashboard/roles") ? "bg-slate-800 text-white" : ""}`}>
+                        <UsersIcon className="w-6 h-6" />
+                        Quản lý quyền
+                    </Link>
+                </PermissionGuard>
+
+                <PermissionGuard permissions={["show-user"]}>
+                    <Link href="/dashboard/users" className={`flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition-all ${isActiveRoute(pathname, "/dashboard/users") ? "bg-slate-800 text-white" : ""}`}>
+                        <UserIcon className="w-6 h-6" />
+                        Cán bộ chiến sĩ
+                    </Link>
+                </PermissionGuard>
+
+                <RoleGuard roles={["super-admin"]}>
+                    <Link href="/dashboard/units" className={`flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition-all ${isActiveRoute(pathname, "/dashboard/units") ? "bg-slate-800 text-white" : ""}`}>
+                        <UserGroupIcon className="w-6 h-6" />
+                        Đội công tác
+                    </Link>
+                </RoleGuard>
                 
-                    if(item.name === "Đăng xuất") {
-                        return (
-                            <button
-                                key={item.name}
-                                onClick={handleLogout}
-                                className="flex items-center cursor-pointer w-full gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition-all"
-                            >
-                                <span>{item.icon}</span>
-                                {item.name}
-                            </button>
-                        );
-                    }
-                    return (
-                        <Link key={item.name} href={item.href} 
-                            className={`flex items-center gap-3 px-4 py-3 rounded-lg 
-                                     hover:bg-slate-800 hover:text-white transition-all
-                                     ${isActive ? "bg-slate-800 text-white" : "hover:bg-slate-800 hover:text-white"}
-                            `}>
-                                <span>{item.icon}</span>
-                                {item.name}
-                        </Link>
-                    );
-                })}
+
+                <Link href="/dashboard/settings" className={`flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition-all ${isActiveRoute(pathname, "/dashboard/settings") ? "bg-slate-800 text-white" : ""}`}>
+                    <Cog6ToothIcon className="w-6 h-6" />
+                    Cài đặt
+                </Link>
+
+                <button onClick={handleLogout} className="flex items-center cursor-pointer w-full gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition-all">
+                    <ArrowRightStartOnRectangleIcon className="w-6 h-6" />
+                    Đăng xuất
+                </button>
             </nav>
         </aside>
     </>

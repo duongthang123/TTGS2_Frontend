@@ -36,8 +36,8 @@ function EditRole() {
     await updateRole(role.id, data);
     toast.success('Cập nhật quyền thành công');
     setTimeout(() => {
-		router.push('/dashboard/roles');
-	}, 1500);
+      router.push('/dashboard/roles');
+    }, 1500);
   }
   
   if (loading) {

@@ -4,7 +4,7 @@ import RoleTable from '@/components/roles/RoleTable'
 import Link from 'next/link'
 import { UserPlusIcon } from '@heroicons/react/24/solid'
 
-function UserPage() {
+function RolePage() {
   return (
     <DashboardLayout>
         <div className='flex justify-between'>
@@ -21,4 +21,4 @@ function UserPage() {
   )
 }
 
-export default UserPage;
+export default RolePage;
