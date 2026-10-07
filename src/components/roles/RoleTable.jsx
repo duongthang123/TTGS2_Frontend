@@ -9,6 +9,8 @@ import ConfirmPrompt from '../ConfirmPrompt/ConfirmPrompt';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import LoadingBlock from '../comon/LoadingBlock';
+import PermissionGuard from '@/components/guards/PermissionGuard';
+
 
 function RoleTable() {
     const router = useRouter();
@@ -87,12 +89,16 @@ function RoleTable() {
                             <td className="px-4 py-3 text-sm text-gray-600">{role.updated_at}</td>
                             <td className="px-4 py-3 text-sm text-gray-600">
                                 <div className="flex items-center space-x-2">
-                                    <a onClick={() => handleEditRole(role.id)} className="p-2 rounded hover:bg-gray-100 cursor-pointer">
-                                        <PencilSquareIcon className="w-6 h-6" />
-                                    </a>
-                                    <a onClick={() => handleDelete(role.id)} className="p-2 rounded hover:bg-gray-100 cursor-pointer">
-                                        <TrashIcon className="w-6 h-6 text-red-600" />
-                                    </a>
+                                    <PermissionGuard permissions={["update-role"]}>
+                                        <a onClick={() => handleEditRole(role.id)} className="p-2 rounded hover:bg-gray-100 cursor-pointer">
+                                            <PencilSquareIcon className="w-6 h-6" />
+                                        </a>
+                                    </PermissionGuard>
+                                    <PermissionGuard permissions={["delete-role"]}>
+                                        <a onClick={() => handleDelete(role.id)} className="p-2 rounded hover:bg-gray-100 cursor-pointer">
+                                            <TrashIcon className="w-6 h-6 text-red-600" />
+                                        </a>
+                                    </PermissionGuard>
                                 </div>
                             </td>
                         </tr>

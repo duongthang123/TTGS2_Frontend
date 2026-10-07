@@ -535,7 +535,7 @@ function UserForm({initialData = {}, onSubmit}) {
 			<div className="flex justify-between gap-4">
 				<div className="w-full">
 					<label className="block text-sm font-bold text-gray-700 mb-1">
-						Chọn quyền truy cập
+						Quyền truy cập
 					</label>
 
 					<div className="grid grid-cols-1 sm:grid-cols-2 gap-2">

@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import LoadingBlock from '../comon/LoadingBlock';
+import RoleGuard from '../guards/RoleGuard';
 
 function ShowUser() {
     const params = useParams();
@@ -317,31 +318,33 @@ function ShowUser() {
 				</div>
 			</div>
 
-			<div className="flex justify-between gap-4">
-				<div className="w-full">
-					<label className="block text-sm mt-1 font-bold text-gray-700 mb-1">
-						Chọn quyền truy cập
-					</label>
+			<RoleGuard roles={["super-admin", "warden", "deputy_warden", "team_leader"]}>
+				<div className="flex justify-between gap-4">
+					<div className="w-full">
+						<label className="block text-sm mt-1 font-bold text-gray-700 mb-1">
+							Quyền truy cập
+						</label>
 
-					<div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-						{roles.map((role) => (
-							<label
-								key={role.id}
-								className="flex items-center gap-3 rounded-lg border border-gray-200 px-3 py-2 hover:border-indigo-500 transition"
-							>
-								<input
-									type="checkbox"
-									value={String(role.id)}
-									defaultChecked={user.roles_id.includes(Number(role.id))}
-									disabled
-									className="h-4 w-4 text-indigo-600 border-gray-300 rounded"
-								/>
-								<span className="text-sm text-gray-700">{role.display_name}</span>
-							</label>
-						))}
+						<div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+							{roles.map((role) => (
+								<label
+									key={role.id}
+									className="flex items-center gap-3 rounded-lg border border-gray-200 px-3 py-2 hover:border-indigo-500 transition"
+								>
+									<input
+										type="checkbox"
+										value={String(role.id)}
+										defaultChecked={user.roles_id.includes(Number(role.id))}
+										disabled
+										className="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+									/>
+									<span className="text-sm text-gray-700">{role.display_name}</span>
+								</label>
+							))}
+						</div>
 					</div>
 				</div>
-			</div>
+			</RoleGuard>
 
 			<div className='flex gap-4 mt-2 mb-6'>
 				<Link href='/dashboard/users' className='p-2 bg-red-400 text-white font-semibold rounded-md hover:bg-red-700-700 transition cursor-pointer'>Quay lại</Link>
