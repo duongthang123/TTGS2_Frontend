@@ -13,7 +13,7 @@ function CreateUser() {
 
 			toast.success('Tạo người dùng thành công');
 			setTimeout(() => {
-			router.push('/dashboard/users');
+				router.push('/dashboard/users');
 			}, 1500);
 		}
 	

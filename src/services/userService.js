@@ -2,13 +2,32 @@ import api from "./api"
 
 export const getUsers = async (currentPage, search = '') => {
     try {
-		const response = await api.get('/users', {
-			params: { page: currentPage, search },
-		});
+    	const response = await api.get('/users', {
+    		params: { page: currentPage, search },
+    	});
         return response.data;
     } catch (error) {
         throw error;
     }
+}
+
+export const getTeamLeaders = async () => {
+	const users = [];
+	let currentPage = 1;
+	let lastPage = 1;
+
+	do {
+		const response = await api.get('/users', {
+			params: { page: currentPage, per_page: 100, role: 'team_leader' },
+		});
+		const result = response.data;
+
+		users.push(...(result.data ?? []));
+		lastPage = result.meta?.last_page ?? 1;
+		currentPage += 1;
+	} while (currentPage <= lastPage);
+
+	return users;
 }
 
 export const getUserById = async (id) => {
