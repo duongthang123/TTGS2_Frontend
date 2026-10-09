@@ -1,9 +1,9 @@
 import api from "./api"
 
-export const getUsers = async (currentPage, search = '') => {
+export const getUsers = async (currentPage, search = '', unitId = '') => {
     try {
     	const response = await api.get('/users', {
-    		params: { page: currentPage, search },
+    		params: { page: currentPage, search, unit_id: unitId },
     	});
         return response.data;
     } catch (error) {

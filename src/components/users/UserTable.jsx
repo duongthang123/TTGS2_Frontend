@@ -11,16 +11,19 @@ import LoadingBlock from '../comon/LoadingBlock';
 import PermissionGuard from '@/components/guards/PermissionGuard';
 
 import { toast } from 'react-toastify';
+import { getAllUnits } from '@/services/unitService';
 
 function UserTable() {
     const [users, setUsers] = useState([]);
     const [selectedUserId, setSelectedUserId] = useState(null);
+    const [units, setUnits] = useState([]);
     const [showFormDelete, setShowFormDelete] = useState(false);
     const [links, setLinks] = useState([]);
     const [meta, setMeta] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [searchInput, setSearchInput] = useState('');
     const [search, setSearch] = useState('');
+    const [unitFilter, setUnitFilter] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     
 
@@ -28,7 +31,7 @@ function UserTable() {
         async function loadUser() {
             setIsLoading(true);
             try {
-                const response = await getUsers(currentPage, search);
+                const response = await getUsers(currentPage, search, unitFilter);
                 setUsers(response.data);
                 setLinks(response.links);
                 setMeta(response.meta);
@@ -41,7 +44,24 @@ function UserTable() {
         }   
 
         loadUser();
-    }, [currentPage, search]);
+    }, [currentPage, search, unitFilter]);
+
+    useEffect(() => {
+        async function loadUnit() {
+            try {
+                const response = await getAllUnits();
+                setUnits(response.data);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        loadUnit();
+    }, [])
+
+    const handleChangeUnitFilter = (e) => {
+        setUnitFilter(e.target.value);
+    }
 
     const handleSearch = (event) => {
         event.preventDefault();
@@ -103,6 +123,7 @@ function UserTable() {
                     className="w-full rounded-md bg-gray-100 border-none focus:ring-2 focus:ring-slate-500 py-2 pl-3 pr-3 text-sm text-gray-900 outline-none transition "
                 />
             </div>
+
             <button
                 type="submit"
                 className="inline-flex items-center outline-none cursor-pointer justify-center gap-2 rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
@@ -110,6 +131,21 @@ function UserTable() {
                 <MagnifyingGlassIcon aria-hidden="true" className="h-4 w-4" />
                 <span className="text-[16px">Tìm kiếm</span>
             </button>
+
+            
+            <div className="relative w-full sm:max-w-xs"> 
+                <select 
+                    className='w-full outline-none rounded-md  bg-gray-100 border-2 py-2 pl-3 pr-3 text-sm text-gray-900 border-slate-500 transition'
+                    value = {unitFilter}  
+                    onChange={handleChangeUnitFilter}  
+                >
+                    <option value="">Đội công tác</option>
+                    {units.map((unit) => (
+                        <option key={unit.id} value={unit.id}>{unit.name}</option>
+                    ))}
+                </select>
+            </div>
+
             {(searchInput || search) && (
                 <button
                     type="button"
@@ -127,7 +163,8 @@ function UserTable() {
             <thead className="bg-gray-100">
                 <tr>
                     <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">ID</th>
-                    <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Họ tên / Số hiệu CAND</th>
+                    <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700 min-w-38">Họ tên / Số hiệu CAND</th>
+                    <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700 min-w-24">Đội công tác</th>
                     <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Điện thoại</th>
                     <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Email</th>
                     <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Địa chỉ</th>
@@ -145,6 +182,9 @@ function UserTable() {
                                     <span className="font-medium text-gray-800">{user.name}</span>
                                     <span className="text-xs text-gray-500">{user.code}</span>
                                 </div>
+                            </td>
+                            <td className="px-4 py-3 text-sm text-gray-600">
+                                {units.find(unit => unit.id === user.unit_id)?.name || ''}
                             </td>
                             <td className="px-4 py-3 text-sm text-gray-600">{user.phone}</td>
                             <td className="px-4 py-3 text-sm text-gray-600">{user.email}</td>
