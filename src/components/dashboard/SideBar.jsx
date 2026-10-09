@@ -1,7 +1,7 @@
 "use client"
 
 import api from '@/services/api';
-import { Cog6ToothIcon, HomeIcon, UserGroupIcon, UserIcon, ArrowRightStartOnRectangleIcon, UsersIcon } from '@heroicons/react/24/solid';
+import { Cog6ToothIcon, HomeIcon, UserGroupIcon, UserIcon, ArrowRightStartOnRectangleIcon, UsersIcon, ChevronDoubleUpIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useContext } from 'react'
@@ -63,6 +63,12 @@ export const SideBar = () => {
                     </Link>
                 </PermissionGuard>
                 
+                {/* <PermissionGuard permissions={["show-ranks"]}> */}
+                    <Link href="/dashboard/ranks" className={`flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition-all ${isActiveRoute(pathname, "/dashboard/ranks") ? "bg-slate-800 text-white" : ""}`}>
+                        <ChevronDoubleUpIcon className="w-6 h-6" />
+                        Quản lý cấp bậc
+                    </Link>
+                {/* </PermissionGuard> */}
 
                 <Link href="/dashboard/settings" className={`flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition-all ${isActiveRoute(pathname, "/dashboard/settings") ? "bg-slate-800 text-white" : ""}`}>
                     <Cog6ToothIcon className="w-6 h-6" />
