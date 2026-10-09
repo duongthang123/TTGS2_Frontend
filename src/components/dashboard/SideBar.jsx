@@ -56,12 +56,12 @@ export const SideBar = () => {
                     </Link>
                 </PermissionGuard>
 
-                <RoleGuard roles={["super-admin"]}>
+                <PermissionGuard permissions={["show-unit"]}>
                     <Link href="/dashboard/units" className={`flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition-all ${isActiveRoute(pathname, "/dashboard/units") ? "bg-slate-800 text-white" : ""}`}>
                         <UserGroupIcon className="w-6 h-6" />
                         Đội công tác
                     </Link>
-                </RoleGuard>
+                </PermissionGuard>
                 
 
                 <Link href="/dashboard/settings" className={`flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition-all ${isActiveRoute(pathname, "/dashboard/settings") ? "bg-slate-800 text-white" : ""}`}>

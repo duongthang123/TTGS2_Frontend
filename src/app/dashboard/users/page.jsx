@@ -8,7 +8,7 @@ function UserPage() {
   return (
     <DashboardLayout>
       <div className='flex justify-between'>
-          <h1 className='py-4 font-bold'>Danh sách cán bộ chiến sĩ</h1>
+          <h1 className='pt-2 py-4 font-bold'>Danh sách cán bộ chiến sĩ</h1>
           
           <Link href="/dashboard/users/create" 
                 className="flex items-center px-3 py-2 h-[36px] my-auto bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 transition"
