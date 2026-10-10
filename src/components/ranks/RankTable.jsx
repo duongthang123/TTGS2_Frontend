@@ -70,7 +70,7 @@ function RankTable() {
 						<th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Tên cấp bậc</th>
 						<th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Ngày tạo</th>
 						<th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Ngày cập nhật</th>
-						<th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Hành động</th>
+						<th className="px-4 py-2 text-left text-sm font-semibold text-gray-700"></th>
 					</tr>
 				</thead>
 				<tbody className="divide-y divide-gray-200">

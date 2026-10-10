@@ -1,3 +1,5 @@
+"use client";
+
 import { usePermission } from "@/hooks/usePermission";
 
 const PermissionGuard = ({ permissions, children }) => {

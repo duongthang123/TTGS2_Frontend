@@ -7,6 +7,7 @@ import api from "@/services/api";
 
 export const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null);
+    const [authReady, setAuthReady] = useState(() => !Cookies.get("access_token"));
 
     const refreshMe = useCallback(async () => {
         const response = await api.get("/me");
@@ -17,11 +18,20 @@ export const AuthProvider = ({children}) => {
     useEffect(() => {
         if (!Cookies.get("access_token")) return;
 
-        refreshMe().catch(() => {});
+        Promise.resolve()
+            .then(refreshMe)
+            .catch((error) => {
+                console.error("Unable to load the authenticated user:", error);
+                Cookies.remove("access_token");
+                setUser(null);
+            })
+            .finally(() => {
+                setAuthReady(true);
+            });
     }, [refreshMe]);
 
     return (
-        <AuthContext.Provider value={{user, setUser, refreshMe}}>
+        <AuthContext.Provider value={{user, setUser, refreshMe, authReady}}>
             {children}
         </AuthContext.Provider>
     )
