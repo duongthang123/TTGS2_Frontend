@@ -17,7 +17,6 @@ function EditUser() {
 		const fetchUserById = async () => {
 			try {
 				const response = await getUserById(params.id);
-				console.log(response.data.data);
 				
 				setUser(response.data.data);
 			} catch (error) {

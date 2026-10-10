@@ -63,12 +63,19 @@ export const SideBar = () => {
                     </Link>
                 </PermissionGuard>
                 
-                {/* <PermissionGuard permissions={["show-ranks"]}> */}
+                <PermissionGuard permissions={["show-rank"]}>
                     <Link href="/dashboard/ranks" className={`flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition-all ${isActiveRoute(pathname, "/dashboard/ranks") ? "bg-slate-800 text-white" : ""}`}>
                         <ChevronDoubleUpIcon className="w-6 h-6" />
                         Quản lý cấp bậc
                     </Link>
-                {/* </PermissionGuard> */}
+                </PermissionGuard>
+
+                <PermissionGuard permissions={["show-position"]}>
+                    <Link href="/dashboard/positions" className={`flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition-all ${isActiveRoute(pathname, "/dashboard/positions") ? "bg-slate-800 text-white" : ""}`}>
+                        <ChevronDoubleUpIcon className="w-6 h-6" />
+                        Quản lý chức vụ
+                    </Link>
+                </PermissionGuard>
 
                 <Link href="/dashboard/settings" className={`flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition-all ${isActiveRoute(pathname, "/dashboard/settings") ? "bg-slate-800 text-white" : ""}`}>
                     <Cog6ToothIcon className="w-6 h-6" />

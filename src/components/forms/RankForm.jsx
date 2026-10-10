@@ -15,7 +15,7 @@ function RankForm({initialData = {}, onSubmit }) {
         setCode(initialData.code || '')
         setName(initialData.name || '')
     }, [initialData])
-    
+
     const handleChangeCode = (e) => {
         setCode(e.target.value)
     }
@@ -23,7 +23,6 @@ function RankForm({initialData = {}, onSubmit }) {
     const handleChangeName = (e) => {
         setName(e.target.value)
     }
-    
 
     const handleSubmitForm = async (e) => {
         e.preventDefault()
