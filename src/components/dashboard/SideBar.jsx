@@ -1,7 +1,7 @@
 "use client"
 
 import api from '@/services/api';
-import { Cog6ToothIcon, HomeIcon, UserGroupIcon, UserIcon, ArrowRightStartOnRectangleIcon, UsersIcon, ChevronDoubleUpIcon } from '@heroicons/react/24/solid';
+import { Cog6ToothIcon, HomeIcon, UserGroupIcon, UserIcon, ArrowRightStartOnRectangleIcon, UsersIcon, ChevronDoubleUpIcon, CurrencyDollarIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useContext } from 'react'
@@ -74,6 +74,13 @@ export const SideBar = () => {
                     <Link href="/dashboard/positions" className={`flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition-all ${isActiveRoute(pathname, "/dashboard/positions") ? "bg-slate-800 text-white" : ""}`}>
                         <ChevronDoubleUpIcon className="w-6 h-6" />
                         Quản lý chức vụ
+                    </Link>
+                </PermissionGuard>
+
+                <PermissionGuard permissions={["show-salary-cfts"]}>
+                    <Link href="/dashboard/salary-cfts" className={`flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition-all ${isActiveRoute(pathname, "/dashboard/salary-cfts") ? "bg-slate-800 text-white" : ""}`}>
+                        <CurrencyDollarIcon className="w-6 h-6" />
+                        Quản lý hệ số lương
                     </Link>
                 </PermissionGuard>
 

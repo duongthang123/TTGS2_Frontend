@@ -21,6 +21,10 @@ const routeRules = [
     { path: "/dashboard/roles", permissions: ["show-role"] },
     { path: "/dashboard/roles/create", permissions: ["create-role"] },
     { path: "/dashboard/roles/:id/edit", permissions: ["update-role"] },
+
+    { path: "/dashboard/salary-cfts", permissions: ["show-salary-cfts"] },
+    { path: "/dashboard/salary-cfts/create", permissions: ["create-salary-cfts"] },
+    { path: "/dashboard/salary-cfts/:id/edit", permissions: ["update-salary-cfts"] },
 ];
 
 function matchesRoute(pattern, pathname) {
