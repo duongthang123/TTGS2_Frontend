@@ -32,6 +32,7 @@ function UserTable() {
             setIsLoading(true);
             try {
                 const response = await getUsers(currentPage, search, unitFilter);
+                console.log(response.data)
                 setUsers(response.data);
                 setLinks(response.links);
                 setMeta(response.meta);
@@ -159,7 +160,8 @@ function UserTable() {
             </p>
         </form>
 
-        <table className='min-w-full border-t border-b border-gray-200 rounded-lg'>
+        <div className="w-full overflow-x-auto rounded-lg lg:overflow-x-visible">
+        <table className='w-full min-w-max rounded-lg border-t border-b border-gray-200 lg:min-w-full'>
             <thead className="bg-gray-100">
                 <tr>
                     <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">ID</th>
@@ -179,7 +181,12 @@ function UserTable() {
                             <td className="px-4 py-3 text-sm text-gray-600 font-semibold">{user.id}</td>
                             <td className="px-4 py-3 text-sm text-gray-600">
                                 <div className="flex flex-col">
-                                    <span className="font-semibold text-indigo-700">{user.name}</span>
+                                    <Link
+                                        href={`/dashboard/users/${user.id}/show`}
+                                        className="font-semibold text-indigo-700 hover:text-indigo-900 hover:underline"
+                                    >
+                                        {user.name}
+                                    </Link>
                                     <span className="text-xs text-gray-500">{user.code}</span>
                                 </div>
                             </td>
@@ -221,6 +228,7 @@ function UserTable() {
                 )}
             </tbody>
         </table>
+        </div>
 
         {showFormDelete && (
             <ConfirmPrompt 

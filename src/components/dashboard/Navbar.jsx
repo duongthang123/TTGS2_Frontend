@@ -9,7 +9,7 @@ export const Navbar = ({title}) => {
     
     return (
     <>
-        <header className="h-16 border-b bg-white/80 backdrop-blur-md sticky top-0 z-20 px-4 md:px-8 flex items-center justify-between">
+        <header className="sticky top-14 z-20 flex h-16 items-center justify-between border-b bg-white/80 px-4 backdrop-blur-md md:top-0 md:px-8">
             <div className="flex items-center gap-4">
                 <h2 className="font-bold text-gray-800 text-lg hidden md:block">
                     {title}
