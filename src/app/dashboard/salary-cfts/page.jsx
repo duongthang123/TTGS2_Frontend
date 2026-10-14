@@ -9,7 +9,7 @@ function SalaryCftPage() {
   return (
     <DashboardLayout>
       <div className='flex justify-between'>
-			<h1 className='pt-2 py-4 font-bold'>Quản lý hệ số lương cán bộ chiến sĩ</h1>
+			<h1 className='pt-2 py-4 font-bold'>Quản lý hệ số lương</h1>
 			
 			<PermissionGuard permissions={["create-salary-cfts"]}>
 

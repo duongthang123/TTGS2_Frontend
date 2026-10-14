@@ -62,7 +62,8 @@ function PositionTable() {
 
     return (
         <>
-			<table className='min-w-full border-t border-b border-gray-200 rounded-lg'>
+			<div className="w-full overflow-x-auto rounded-lg lg:overflow-x-visible">
+			<table className='w-full min-w-max rounded-lg border-t border-b border-gray-200 lg:min-w-full'>
 				<thead className="bg-gray-100">
 					<tr>
 						<th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">ID</th>
@@ -103,6 +104,7 @@ function PositionTable() {
 					)}
 				</tbody>
 			</table>
+			</div>
 
 			{showFormDelete && (
 				<ConfirmPrompt
