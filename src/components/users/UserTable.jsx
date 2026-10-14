@@ -179,7 +179,7 @@ function UserTable() {
                             <td className="px-4 py-3 text-sm text-gray-600 font-semibold">{user.id}</td>
                             <td className="px-4 py-3 text-sm text-gray-600">
                                 <div className="flex flex-col">
-                                    <span className="font-medium text-gray-800">{user.name}</span>
+                                    <span className="font-semibold text-indigo-700">{user.name}</span>
                                     <span className="text-xs text-gray-500">{user.code}</span>
                                 </div>
                             </td>
