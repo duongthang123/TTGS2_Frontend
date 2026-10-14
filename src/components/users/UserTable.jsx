@@ -32,6 +32,7 @@ function UserTable() {
             setIsLoading(true);
             try {
                 const response = await getUsers(currentPage, search, unitFilter);
+                console.log(response.data)
                 setUsers(response.data);
                 setLinks(response.links);
                 setMeta(response.meta);

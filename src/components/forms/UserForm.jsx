@@ -4,6 +4,7 @@ import { USER_STATUS, USER_STATUS_LABELS } from '@/constants/userStatus'
 import { getAllPositions } from '@/services/positionService'
 import { getAllRanks } from '@/services/rankService'
 import { getRoles } from '@/services/roleService'
+import { getAllSalaryCft } from '@/services/salaryCftService'
 import { getAllUnits } from '@/services/unitService'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
@@ -32,6 +33,8 @@ function UserForm({initialData = {}, onSubmit}) {
 	const [status, setStatus] = useState('')
 	const [roles_id, setRolesId] = useState([])
 	const [roles, setRoles] = useState([])
+	const [latestSalaryCft, setLatestSalaryCft] = useState(null)
+	const [isSalaryLoading, setIsSalaryLoading] = useState(false)
 
 	const [errors, setErrors] = useState([])
 	const [isLoading, setIsLoading] = useState(true)
@@ -86,6 +89,45 @@ function UserForm({initialData = {}, onSubmit}) {
 			[]
 		);
 	}, [initialData]);
+
+	useEffect(() => {
+		if (!initialData?.id) {
+			setLatestSalaryCft(null)
+			setIsSalaryLoading(false)
+			return
+		}
+
+		let isCancelled = false
+		setIsSalaryLoading(true)
+
+		const fetchLatestSalaryCft = async () => {
+			try {
+				const response = await getAllSalaryCft({
+					user_id: initialData.id,
+					per_page: 1,
+				})
+
+				if (!isCancelled) {
+					setLatestSalaryCft(response.data?.[0] ?? null)
+				}
+			} catch (error) {
+				if (!isCancelled) {
+					console.error('Error loading latest salary coefficient:', error)
+					toast.error('Không thể tải hệ số lương mới nhất')
+				}
+			} finally {
+				if (!isCancelled) {
+					setIsSalaryLoading(false)
+				}
+			}
+		}
+
+		fetchLatestSalaryCft()
+
+		return () => {
+			isCancelled = true
+		}
+	}, [initialData?.id])
 
 	const clearFieldError = (field) => {
 		setErrors((prev) => ({ ...prev, [field]: '' }))
@@ -576,6 +618,29 @@ function UserForm({initialData = {}, onSubmit}) {
 					)}
 				</div>
 			</div>
+
+			{initialData?.id && (
+				<div className="mb-4 flex justify-between gap-4">
+					<div className="w-1/2">
+						<label className="block text-sm font-bold text-gray-700 mb-1">
+							Hệ số lương
+						</label>
+						<input
+							type="text"
+							className="w-full border-[1px] outline-none border-gray-300 rounded-md px-3 py-2"
+							value={
+								isSalaryLoading
+									? ''
+									: latestSalaryCft
+										? latestSalaryCft.salary
+										: 'Chưa có dữ liệu'
+							}
+							disabled
+							readOnly
+						/>
+					</div>
+				</div>
+			)}
 
 			<div className='flex gap-4 mt-2 mb-6'>
 				<button 
