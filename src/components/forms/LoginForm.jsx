@@ -14,6 +14,7 @@ export const LoginForm = () => {
     const [citizenNumber, setCitizenNumber] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
 
 
     const handleCitizenNumber = (e) => {
@@ -26,6 +27,9 @@ export const LoginForm = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        if (isLoading) return;
+
+        setIsLoading(true);
         setErrors(null);
         
         try {
@@ -49,6 +53,8 @@ export const LoginForm = () => {
         } catch (error) {
             const err = error.response?.data?.errors;
             setErrors(err); 
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -67,6 +73,7 @@ export const LoginForm = () => {
                         className="w-full rounded-sm border border-gray-300 p-2 focus:outline-none focus:border-gray-700 transition ease-in-out" 
                         value={citizenNumber}
                         onChange={handleCitizenNumber}
+                        disabled={isLoading}
                     />
                 </div>
 
@@ -79,6 +86,7 @@ export const LoginForm = () => {
                         className="w-full rounded-sm border border-gray-300 p-2 focus:outline-none focus:border-gray-700 transition ease-in-out"
                         value={password}
                         onChange={handlePassword}
+                        disabled={isLoading}
                     />
                 </div>
 
@@ -88,9 +96,18 @@ export const LoginForm = () => {
 
                 <button 
                     type='submit'  
-                    className='w-full cursor-pointer bg-blue-600 text-white py-2 rounded-sm hover:bg-blue-700 transition'
+                    disabled={isLoading}
+                    aria-busy={isLoading}
+                    className='w-full cursor-pointer bg-blue-600 text-white py-2 rounded-sm hover:bg-blue-700 transition disabled:cursor-not-allowed disabled:opacity-70'
                 >
-                    Đăng nhập
+                    {isLoading ? (
+                        <span className="inline-flex items-center justify-center gap-2" role="status">
+                            <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" aria-hidden="true" />
+                            Đang đăng nhập...
+                        </span>
+                    ) : (
+                        'Đăng nhập'
+                    )}
                 </button>
 
                 <div className="text-center text-sm text-gray-500">
