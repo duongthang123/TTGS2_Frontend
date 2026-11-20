@@ -121,6 +121,7 @@ function UserTable() {
                     onChange={(event) => setSearchInput(event.target.value)}
                     placeholder="Tìm theo tên, mã, điện thoại hoặc email"
                     aria-label="Tìm người dùng"
+                    autoFocus
                     className="w-full rounded-md bg-gray-100 border-none focus:ring-2 focus:ring-slate-500 py-2 pl-3 pr-3 text-sm text-gray-900 outline-none transition "
                 />
             </div>

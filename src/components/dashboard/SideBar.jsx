@@ -1,7 +1,7 @@
 "use client"
 
 import api from '@/services/api';
-import { Cog6ToothIcon, HomeIcon, UserGroupIcon, UserIcon, ArrowRightStartOnRectangleIcon, UsersIcon, ChevronDoubleUpIcon, CurrencyDollarIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/solid';
+import { Cog6ToothIcon, HomeIcon, UserGroupIcon, UserIcon, ArrowRightStartOnRectangleIcon, UsersIcon, ChevronDoubleUpIcon, CurrencyDollarIcon, Bars3Icon, XMarkIcon, MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useContext, useState } from 'react'
@@ -80,6 +80,13 @@ export const SideBar = () => {
                 <Link href="/dashboard/salary-cfts" onClick={() => setIsMobileMenuOpen(false)} className={`flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition-all ${isActiveRoute(pathname, "/dashboard/salary-cfts") ? "bg-slate-800 text-white" : ""}`}>
                     <CurrencyDollarIcon className="w-6 h-6" />
                     Quản lý hệ số lương
+                </Link>
+            </PermissionGuard>
+
+            <PermissionGuard permissions={["show-prisoner"]}>
+                <Link href="/dashboard/prisoners" onClick={() => setIsMobileMenuOpen(false)} className={`flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition-all ${isActiveRoute(pathname, "/dashboard/prisoners") ? "bg-slate-800 text-white" : ""}`}>
+                    <MagnifyingGlassIcon className="w-6 h-6" />
+                    Tra cứu can phạm nhân
                 </Link>
             </PermissionGuard>
 
